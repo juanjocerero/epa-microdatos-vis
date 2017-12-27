@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <input type="number" id="age">
+  <button id="get-data">get data</button>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+  <script>
+
+    // TODO: No permitir campos vacíos
+    // TODO: Incluir selector de estudios y mapearlo a las siglas
+    // TODO: ¿Es necesario pedir objetos completos o sólo con números vale? 
+
+    document.getElementById('get-data').addEventListener('click', event => {
+      
+      let url = new URL('https://api.mlab.com/api/1/databases/heroku_bjc39hgh/collections/persons')
+      let lastCycle = 148
+
+      const replaceEmptyStringWithNulls = datum => {
+        Object.keys(datum).forEach(key => datum[key] === "" ? datum[key] = null : null)
+        return datum
+      }
+
+      let params = {
+        q: JSON.stringify({
+          edad5: +document.getElementById('age').value,
+          ciclo: {
+            $gt: 144,
+            $lt: 149
+          }
+        }),
+        c: false,
+        f: JSON.stringify({
+          edad5: 1,
+          ciclo: 1,
+          aoi: 1,
+          busotr: 1,
+          trarem: 1,
+          cursr: 1,
+          cursnr: 1,
+          busca: 1,
+          desea: 1,
+          nforma2: 1,
+          traant: 1,
+          extra: 1,
+          extpag: 1,
+          itbu: 1,
+          parco1: 1,
+          ducon1: 1,
+          tcontd: 1,
+          tcontm: 1,
+          act11: 1,
+          _id: 0
+        }),
+        l: 5000,
+        apiKey: 'dpzdnDmGlz6MviOHNv-qBdjknNLfhPpF'
+      }
+      
+      Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+
+      fetch(url)
+      .then(response => response.json())
+      .then(data => console.log(data.map(replaceEmptyStringWithNulls)))
+      .catch(err => console.error(err))
+
+    })
+
+  </script>
+</body>
+</html>
